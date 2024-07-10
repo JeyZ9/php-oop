@@ -1,15 +1,12 @@
 <?php
 
-// include "./model/Address.php";
-// include "./model/Person.php";
+include "connect.php";
 
-// // สร้าง instance ของ Address
-// $address = new Address('123 Main St', 'Springfield', 'IL', '62701');
+$sql = "SELECT * FROM person";
+$stmt = $pdo->prepare($sql);
 
-// // สร้าง instance ของ Person โดยใช้ address ที่สร้างไว้
-// $person = new Person('John Doe', 30, $address);
-
-// echo $person;
+$stmt->execute();
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
@@ -18,27 +15,24 @@
 <head>
     <title>Person Form</title>
 </head>
-<body>
-    <form action="process.php" method="post">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
-
-        <label for="age">Age:</label>
-        <input type="number" id="age" name="age" required><br>
-
-        <label for="street">Street:</label>
-        <input type="text" id="street" name="street" required><br>
-
-        <label for="city">City:</label>
-        <input type="text" id="city" name="city" required><br>
-
-        <label for="state">State:</label>
-        <input type="text" id="state" name="state" required><br>
-
-        <label for="postalCode">Postal Code:</label>
-        <input type="text" id="postalCode" name="postalCode" required><br>
-
+<br>
+    <form action="process.php/add" method="post">
+    <input type="hidden" name="_method" value="POST">
+        <?php include"./component/form.php" ?>
         <input type="submit" value="Submit">
     </form>
+
+    <?php foreach($results as $r){?>
+        <tr class="">
+            <td class="px-5 py-2"><?=$r['name'] ?></td>
+            <td class="px-5 py-2"><?=$r['age']?></td>
+            <td class="px-5 py-2"><?=$r['street']?></td>
+            <td class="px-5 py-2"><?=$r['city']?></td>
+            <td class="px-5 py-2"><?=$r['state']?></td>
+            <td class="px-5 py-2"><?=$r['postalCode']?></td>
+        </tr></br>
+    <?php }?>
+
+
 </body>
 </html>
